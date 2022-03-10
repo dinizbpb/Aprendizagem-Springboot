@@ -42,6 +42,9 @@ public class blogPessoalModelPostagens {
 	private blogPessoalModelTema tema;
 			//chama a model tema //nome do metodo/função
 	 
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private blogPessoalModelUsuario usuario;
 
 	public long getId() {
 		return id;

@@ -2,6 +2,7 @@ package br.com.generation.blogPessoal.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,51 +13,47 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-@EnableWebSecurity //avisa para aplicação que se trada de uma classe de Configuração de segurança do spring
+@EnableWebSecurity
+public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	public class BasicSecurityConfig  extends WebSecurityConfigurerAdapter{
-		
-		@Autowired
-		private UserDetailsService userDetailsService;
-		
-		
-		@Override
-		protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-			
-			auth.userDetailsService(userDetailsService); //autenticação do login de usuarios via banco de dados
-			
-			auth.inMemoryAuthentication()
-				.withUser("root")
-				.password(passwordEncoder().encode("root"))	//autenticação do login de usuarios via camada model usuarioLogin (usuario wue não está no banco de dados)
-				.authorities("ROLE_USER");
-		}
 	
-		@Bean
-		public PasswordEncoder passwordEncoder() {
-			return new BCryptPasswordEncoder();
-		}
+	@Autowired
+	private UserDetailsService userDetailsService;
+
 	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		
-		@Override
-		protected void configure(HttpSecurity http) throws Exception{
-			http.authorizeRequests()
+		
+		 auth.userDetailsService(userDetailsService);
+
+		 auth.inMemoryAuthentication()
+			.withUser("root")
+			.password(passwordEncoder().encode("root"))
+			.authorities("ROLE_USER");
+
+	}
+
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	
+	 @Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		
+		http.authorizeRequests()
 			.antMatchers("/usuarios/logar").permitAll()
 			.antMatchers("/usuarios/cadastrar").permitAll()
+			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.anyRequest().authenticated()
 			.and().httpBasic()
-			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //não guarda sessão
+			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and().cors()
 			.and().csrf().disable();
 			
-		}
-		
-	
-	//completo
-	
-	
-	
-	
-	
-	
-
 	}
+}

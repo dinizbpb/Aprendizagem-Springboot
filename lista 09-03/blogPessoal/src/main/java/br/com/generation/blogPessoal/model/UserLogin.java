@@ -12,6 +12,8 @@ public class UserLogin {
 	
 	private String senha;
 	
+	private String foto;
+	
 	private String token;  //atributo que dá acesso ao usuario quando ele logar na plataforma
 
 	
@@ -26,7 +28,16 @@ public class UserLogin {
 		this.token = token;
 	}
 
-	public UserLogin() { }
+	public UserLogin(Long id, String nome, String usuario, String senha, String foto, String token) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+		this.token = token;
+	}
+
+	public UserLogin() {	}
 
 	public Long getId() {
 		return id;
@@ -48,6 +59,14 @@ public class UserLogin {
 		return usuario;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
@@ -60,15 +79,12 @@ public class UserLogin {
 		this.senha = senha;
 	}
 
-	public String getToken() {
-		return token;
+	public String getFoto() {
+		return foto;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	
-	
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}	
 
 }

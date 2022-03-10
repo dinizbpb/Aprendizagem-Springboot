@@ -3,9 +3,9 @@ package br.com.generation.blogPessoal.service;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-import br.com.generation.blogPessoal.model.blogPessoalModelUsuario;
-import br.com.generation.blogPessoal.model.UserLogin;
-import br.com.generation.blogPessoal.repository.blogPessoalRepositoryUsuario;
+import br.com.generation.blogPessoal.model.blogPessoalModelUsuario;     //com.generation.blogpessoal.model.Usuario;
+import br.com.generation.blogPessoal.model.UserLogin;  //com.generation.blogpessoal.model.UsuarioLogin;
+import br.com.generation.blogPessoal.repository.blogPessoalRepositoryUsuario; //com.generation.blogpessoal.repository.UsuarioRepository
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class userService {
 	@Autowired
 	private blogPessoalRepositoryUsuario usuarioRepository;
 	
-	
+
 	public Optional<blogPessoalModelUsuario> cadastrarUsuario(blogPessoalModelUsuario usuario) {
 
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
@@ -57,6 +57,7 @@ public class userService {
 			
 		}
 		
+		
 		return Optional.empty();
 	
 	}	
@@ -70,14 +71,17 @@ public class userService {
 		
 		if (usuario.isPresent()) {
 
+			
 			if (compararSenhas(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
 
 				
 				usuarioLogin.get().setId(usuario.get().getId());
 				usuarioLogin.get().setNome(usuario.get().getNome());
+				usuarioLogin.get().setFoto(usuario.get().getFoto());
 				usuarioLogin.get().setToken(gerarBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
 				usuarioLogin.get().setSenha(usuario.get().getSenha());
 
+				
 				return usuarioLogin;
 
 			}
@@ -98,7 +102,6 @@ public class userService {
 	}
 	
 	
-	
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -117,4 +120,3 @@ public class userService {
 	}
 
 }
-

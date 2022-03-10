@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Optional;
 
+import br.com.generation.blogPessoal.model.blogPessoalModelUsuario;         //com.generation.blogpessoal.model.Usuario;
+import br.com.generation.blogPessoal.model.UserLogin;         //com.generation.blogpessoal.model.UsuarioLogin;
+import br.com.generation.blogPessoal.repository.blogPessoalRepositoryUsuario;  //com.generation.blogpessoal.repository.UsuarioRepository;
+import br.com.generation.blogPessoal.service.userService;   //blogpessoal.service.UsuarioService;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -20,16 +25,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import br.com.generation.blogPessoal.model.UserLogin;
-import br.com.generation.blogPessoal.model.blogPessoalModelUsuario;
-import br.com.generation.blogPessoal.repository.blogPessoalRepositoryUsuario;
-import br.com.generation.blogPessoal.service.userService;
-
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UsuarioControllerTest {
 
+	
 	@Autowired
 	private TestRestTemplate testRestTemplate;
 
@@ -55,7 +56,7 @@ public class UsuarioControllerTest {
 
 		
 		HttpEntity<blogPessoalModelUsuario> corpoRequisicao = new HttpEntity<blogPessoalModelUsuario>(new blogPessoalModelUsuario(0L, 
-			"Paulo Antunes", "paulo_antunes@email.com.br", "1346527899"));
+			"Paulo Antunes", "paulo_antunes@email.com.br", "13465278", "https://i.imgur.com/JR7kUFU.jpg"));
 
 		
 		ResponseEntity<blogPessoalModelUsuario> corpoResposta = testRestTemplate
@@ -78,11 +79,11 @@ public class UsuarioControllerTest {
 
 		
 		usuarioService.cadastrarUsuario(new blogPessoalModelUsuario(0L, 
-			"Maria da Silva", "maria_silva@email.com.br", "1346527899"));
+			"Maria da Silva", "maria_silva@email.com.br", "13465278", "https://i.imgur.com/T12NIp9.jpg"));
 
 		
 		HttpEntity<blogPessoalModelUsuario> corpoRequisicao = new HttpEntity<blogPessoalModelUsuario>(new blogPessoalModelUsuario(0L, 
-			"Maria da Silva", "maria_silva@email.com.br", "1346527899"));
+			"Maria da Silva", "maria_silva@email.com.br", "13465278", "https://i.imgur.com/T12NIp9.jpg"));
 
 		
 		ResponseEntity<blogPessoalModelUsuario> corpoResposta = testRestTemplate
@@ -99,17 +100,17 @@ public class UsuarioControllerTest {
 
 		
 		Optional<blogPessoalModelUsuario> usuarioCadastrado = usuarioService.cadastrarUsuario(new blogPessoalModelUsuario(0L, 
-			"Juliana Andrews", "juliana_andrews@email.com.br", "juliana123"));
+			"Juliana Andrews", "juliana_andrews@email.com.br", "juliana123", "https://i.imgur.com/yDRVeK7.jpg"));
 		
 		blogPessoalModelUsuario usuarioUpdate = new blogPessoalModelUsuario(usuarioCadastrado.get().getId(), 
-			"Juliana Andrews Ramos", "juliana_ramos@email.com.br", "juliana123");
+			"Juliana Andrews Ramos", "juliana_ramos@email.com.br", "juliana123" , "https://i.imgur.com/yDRVeK7.jpg");
 		
 		
 		HttpEntity<blogPessoalModelUsuario> corpoRequisicao = new HttpEntity<blogPessoalModelUsuario>(usuarioUpdate);
 
 		
 		ResponseEntity<blogPessoalModelUsuario> corpoResposta = testRestTemplate
-			.withBasicAuth("root", "060595")
+			.withBasicAuth("root", "root")
 			.exchange("/usuarios/atualizar", HttpMethod.PUT, corpoRequisicao, blogPessoalModelUsuario.class);
 
 		
@@ -129,16 +130,17 @@ public class UsuarioControllerTest {
 
 		
 		usuarioService.cadastrarUsuario(new blogPessoalModelUsuario(0L, 
-			"Sabrina Sanches", "sabrina_sanches@email.com.br", "sabrina1234"));
+			"Sabrina Sanches", "sabrina_sanches@email.com.br", "sabrina123", "https://i.imgur.com/5M2p5Wb.jpg"));
 		
 		usuarioService.cadastrarUsuario(new blogPessoalModelUsuario(0L, 
-			"Ricardo Marques", "ricardo_marques@email.com.br", "ricardo123"));
+			"Ricardo Marques", "ricardo_marques@email.com.br", "ricardo123", "https://i.imgur.com/Sk5SjWE.jpg"));
 
 		
 		ResponseEntity<String> resposta = testRestTemplate
-			.withBasicAuth("root", "060595")
+			.withBasicAuth("root", "root")
 			.exchange("/usuarios/all", HttpMethod.GET, null, String.class);
 
+		
 		assertEquals(HttpStatus.OK, resposta.getStatusCode());
 
 	}
@@ -151,12 +153,13 @@ public class UsuarioControllerTest {
 	public void deveListarApenasUmUsuario() {
 		
 		
+		
 		Optional<blogPessoalModelUsuario> usuarioBusca = usuarioService.cadastrarUsuario(new blogPessoalModelUsuario(0L, 
-				"Laura Santolia", "laura_santolia@email.com.br", "laura12345"));
+				"Laura Santolia", "laura_santolia@email.com.br", "laura12345", "https://i.imgur.com/EcJG8kB.jpg"));
 			
 		
 		ResponseEntity<String> resposta = testRestTemplate
-				.withBasicAuth("root", "060595")
+				.withBasicAuth("root", "root")
 				.exchange("/usuarios/" + usuarioBusca.get().getId(), HttpMethod.GET, null, String.class);
 		
 		
@@ -171,11 +174,11 @@ public class UsuarioControllerTest {
 
 		
 		usuarioService.cadastrarUsuario(new blogPessoalModelUsuario(0L, 
-			"Marisa Souza", "marisa_souza@email.com.br", "13465278"));
+			"Marisa Souza", "marisa_souza@email.com.br", "13465278", "https://i.imgur.com/T12NIp9.jpg"));
 
 		
-		HttpEntity<blogPessoalModelUsuario> corpoRequisicao = new HttpEntity<blogPessoalModelUsuario>(new blogPessoalModelUsuario(0L, 
-			"maria", "marisa_souza@email.com.br", "1346527899"));
+		HttpEntity<UserLogin> corpoRequisicao = new HttpEntity<UserLogin>(new UserLogin(0L, 
+			"", "marisa_souza@email.com.br", "13465278", "", ""));
 
 		
 		ResponseEntity<UserLogin> corpoResposta = testRestTemplate

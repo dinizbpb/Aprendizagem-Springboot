@@ -6,8 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.generation.blogPessoal.model.blogPessoalModelUsuario;
-
+import br.com.generation.blogPessoal.model.blogPessoalModelUsuario; //com.generation.blogpessoal.model.Usuario;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,13 +32,13 @@ public class UsuarioRepositoryTest {
 		usuarioRepository.deleteAll();
 		
 
-		usuarioRepository.save(new blogPessoalModelUsuario(0L, "João da Silva", "joao@email.com.br", "1346527899"));
+		usuarioRepository.save(new blogPessoalModelUsuario(0L, "João da Silva", "joao@email.com.br", "13465278", "https://i.imgur.com/FETvs2O.jpg"));
 		
-		usuarioRepository.save(new blogPessoalModelUsuario(0L, "Manuela da Silva", "manuela@email.com.br", "1346527888"));
+		usuarioRepository.save(new blogPessoalModelUsuario(0L, "Manuela da Silva", "manuela@email.com.br", "13465278", "https://i.imgur.com/NtyGneo.jpg"));
 		
-		usuarioRepository.save(new blogPessoalModelUsuario(0L, "Adriana da Silva", "adriana@email.com.br", "1346527888"));
+		usuarioRepository.save(new blogPessoalModelUsuario(0L, "Adriana da Silva", "adriana@email.com.br", "13465278", "https://i.imgur.com/mB3VM2N.jpg"));
 
-        usuarioRepository.save(new blogPessoalModelUsuario(0L, "Paulo Antunes", "paulo@email.com.br", "134652789"));
+        usuarioRepository.save(new blogPessoalModelUsuario(0L, "Paulo Antunes", "paulo@email.com.br", "13465278", "https://i.imgur.com/JR7kUFU.jpg"));
 
 	}
 
@@ -59,20 +58,19 @@ public class UsuarioRepositoryTest {
 	public void deveRetornarTresUsuarios() {
 
 		
-		Optional<blogPessoalModelUsuario> listaDeUsuarios = usuarioRepository.findByUsuario("Silva");
+		List<blogPessoalModelUsuario> listaDeUsuarios = usuarioRepository.findAllByNomeContainingIgnoreCase("Silva");
 
 		
-		assertEquals(3, listaDeUsuarios);
+		assertEquals(3, listaDeUsuarios.size());
 
 		
-		 
-		assertTrue(listaDeUsuarios.get().getNome().equals("João da Silva"));
+		assertTrue(listaDeUsuarios.get(0).getNome().equals("João da Silva"));
 
 		
-		assertTrue(listaDeUsuarios.get().getNome().equals("Manuela da Silva"));
+		assertTrue(listaDeUsuarios.get(1).getNome().equals("Manuela da Silva"));
 
 		
-		assertTrue(listaDeUsuarios.get().getNome().equals("Adriana da Silva"));
+		assertTrue(listaDeUsuarios.get(2).getNome().equals("Adriana da Silva"));
 		
 	}
 
